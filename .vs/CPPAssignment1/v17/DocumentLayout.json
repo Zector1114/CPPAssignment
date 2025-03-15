@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Erik Anderson\\source\\repos\\CPPAssignment1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7C6FEC79-A819-46A7-AD34-6BFFFA04E070}|CPPAssignment1.vcxproj|C:\\Users\\Erik Anderson\\source\\repos\\CPPAssignment1\\CPPAssignment1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{7C6FEC79-A819-46A7-AD34-6BFFFA04E070}|CPPAssignment1.vcxproj|solutionrelative:CPPAssignment1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CPPAssignment1.cpp",
+              "DocumentMoniker": "C:\\Users\\Erik Anderson\\source\\repos\\CPPAssignment1\\CPPAssignment1.cpp",
+              "RelativeDocumentMoniker": "CPPAssignment1.cpp",
+              "ToolTip": "C:\\Users\\Erik Anderson\\source\\repos\\CPPAssignment1\\CPPAssignment1.cpp",
+              "RelativeToolTip": "CPPAssignment1.cpp",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAAAE8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-02-14T22:30:15.418Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
