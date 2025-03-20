@@ -47,13 +47,12 @@ class Monster // Erik
 {
 public:
     void TakeDamage(float damage);
-private:
     bool isDefending = false;
     float monsterHealth;
     float monsterDamage;
-    void DetermineMove();
-    void MonsterAttack();
-    void MonsterDefend();
+    virtual void DetermineMove(); // |
+    virtual void MonsterAttack(); // Polymorphism
+    virtual void MonsterDefend(); // |
 };
 
 void Monster::DetermineMove() // Erik
@@ -75,6 +74,27 @@ void Monster::TakeDamage(float damage) // Erik
 {
 
 }
+
+class Slime : public Monster // Erik - Inheritance
+{
+
+};
+
+class Zombie : public Monster // Erik - Inheritance
+{
+
+};
+
+class Spider : public Monster // Erik - Inheritance
+{
+
+};
+
+class Skeleton : public Monster // Erik - Inheritance
+{
+
+};
+
 #pragma endregion Monster
 
 #pragma region Dialogue
