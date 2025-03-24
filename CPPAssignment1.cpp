@@ -102,7 +102,7 @@ class Dialogue // Will
 {
 public:
     string OutputDialogue(int dialogue);
-    string OutputCombat(int combat);
+    string OutputCombat(int combat, string monType);
 private:
     string dialogue[100]; // The 100 is a placeholder
     string combatDialogue[20]; // 20 is too
@@ -112,12 +112,32 @@ private:
 
 string Dialogue::OutputDialogue(int dialogue) // Will
 {
-
+    string dialogueList[] = {
+        "You are a wary adventurer who heard promise of treasures hidden deep within the cave you now find yourself in.",
+        "The only light you have is a warm glow from a makeshift torch, and the only sound is the crackling of its fire, as it tries to naw its way through the piece of driftwood and cloth you fashioned it out of.",
+        "The sound would be soothing if it weren't for the put in your stomach urging you, with every step, to turn heel and run.",
+        "As you contemplate it an unfamiliar sound echoes from deep within the abyss in front of you.",
+        "With the promise of treasure too good to pass up, you steel your nerves and press deeper into the darkness."
+    };
+   
+    return dialogueList[dialogue];
 }
 
-string Dialogue::OutputCombat(int combat) // Will
+string Dialogue::OutputCombat(int combat, string monType) // Will
 {
+    string dialogueList[] = {
+        "A random " + monType + " appeared!",
+        "What will you do?",
+        "Invalid input! Please try something else. ",
+        "You attack the " + monType + "!",
+        "You heal yourself!",
+        "The " +monType+ "attacks! Ouch!",
+        "The " + monType + "is Defending!",
+        "you defeated the "+ monType +"!",
+        "You where slain by " +monType+ "! Game over!"
+    };
 
+    return dialogueList[combat];
 }
 #pragma endregion Dialogue
 
