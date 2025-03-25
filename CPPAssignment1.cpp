@@ -18,6 +18,8 @@ public:
     float healAmount;
     float ReturnHealth();
     void TakeDamage(float damage);
+    void TurnEnd();
+    void PlayerDied();
 private:
     float currentHealth;
     float maxHealth;
@@ -33,10 +35,22 @@ float PlayerCombat::ReturnHealth() // Sophie
 
 void PlayerCombat::TakeDamage(float damage) // Sophie
 {
-
+    currentHealth -= damage;
+    if (currentHealth <= 0) { PlayerDied(); }
 }
 
 void PlayerCombat::Heal(float healAmount) // Sophie
+{
+    currentHealth += healAmount;
+    if (currentHealth > maxHealth) {currentHealth = maxHealth;}
+}
+
+void PlayerCombat::TurnEnd() //Sophie
+{
+    if (healTimer > 0) { healTimer--; }
+}
+
+void PlayerCombat::PlayerDied()
 {
 
 }
