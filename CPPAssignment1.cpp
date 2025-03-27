@@ -16,13 +16,14 @@ class PlayerCombat // Sophie
 public:
     float damage;
     float healAmount;
-    float ReturnHealth();
+    static float ReturnHealth();
+    static float ReturnMaxHealth();
     void TakeDamage(float damage);
     void TurnEnd();
     void PlayerDied();
 private:
-    float currentHealth;
-    float maxHealth;
+    static float currentHealth;
+    static float maxHealth;
     int healTimer = 3;
     int healTimerTurnAmount = 3;
     void Heal(float healAmount);
@@ -31,6 +32,11 @@ private:
 float PlayerCombat::ReturnHealth() // Sophie
 {
     return currentHealth;
+}
+
+float PlayerCombat::ReturnMaxHealth() // Sophie
+{
+    return maxHealth;
 }
 
 void PlayerCombat::TakeDamage(float damage) // Sophie
@@ -60,39 +66,80 @@ void PlayerCombat::PlayerDied()
 class Monster // Erik
 {
 public:
-    void TakeDamage(float damage);
+    Monster() {};
     bool isDefending = false;
-    float monsterHealth;
-    float monsterDamage;
-    virtual void DetermineMove(); // |
-    virtual void MonsterAttack(); // Polymorphism
-    virtual void MonsterDefend(); // |
+    float currentHealth = 100;
+    float maxHealth = 100;
+    void SetHealth(float currentHealth, float maxHealth);
+    virtual void TakeDamage(float damage);
+    virtual float DetermineMove(); // |
+    virtual float MonsterAttack(float monsterDamage); // Polymorphism
+    virtual float MonsterDefend(); // |
 };
 
-void Monster::DetermineMove() // Erik
+void Monster::SetHealth(float currentHealth, float maxHealth)
 {
-    
+    currentHealth = maxHealth;
 }
 
-void Monster::MonsterAttack() // Erik
-{
+float Monster::DetermineMove() {} // Erik
 
+float Monster::MonsterAttack(float monsterDamage) // Erik
+{
+    return monsterDamage;
 }
 
-void Monster::MonsterDefend() // Erik
-{
+float Monster::MonsterDefend() {} // Erik
 
-}
-
-void Monster::TakeDamage(float damage) // Erik
-{
-
-}
+void Monster::TakeDamage(float damage) {} // Erik
 
 class Slime : public Monster // Erik - Inheritance
 {
-
+public:
+    bool isDefending = false;
+    float maxHealth = 100;
+    float currentHealth = 100;
+    float slimeDamage = 5;
+    float MonsterAttack(float slimeDamage) override;
+    void TakeDamage(float damage) override;
+    float MonsterDefend() override;
+    float DetermineMove();
 };
+
+void Slime::TakeDamage(float damage)
+{
+    if (isDefending) maxHealth -= damage / 2;
+    else maxHealth -= damage;
+}
+
+float Slime::MonsterAttack(float slimeDamage)
+{
+    isDefending = false;
+    return slimeDamage;
+}
+
+float Slime::MonsterDefend()
+{
+    isDefending = true;
+    return 0;
+}
+
+float Slime::DetermineMove()
+{
+    if ((PlayerCombat::ReturnHealth() / PlayerCombat::ReturnMaxHealth()) - (currentHealth / maxHealth) >= 0.50)
+    {
+        return MonsterDefend();
+    }
+    else if ((PlayerCombat::ReturnHealth() / PlayerCombat::ReturnMaxHealth()) - (currentHealth / maxHealth) >= 0.30)
+    {
+        if (isDefending)
+        {
+            return MonsterAttack(slimeDamage);
+        }
+    }
+
+    return MonsterAttack(slimeDamage);
+}
 
 class Zombie : public Monster // Erik - Inheritance
 {
@@ -108,7 +155,6 @@ class Skeleton : public Monster // Erik - Inheritance
 {
 
 };
-
 #pragma endregion Monster
 
 #pragma region Dialogue
