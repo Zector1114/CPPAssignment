@@ -93,6 +93,7 @@ float Monster::MonsterDefend() {} // Erik
 
 void Monster::TakeDamage(float damage) {} // Erik
 
+#pragma region Slime
 class Slime : public Monster // Erik - Inheritance
 {
 public:
@@ -140,21 +141,157 @@ float Slime::DetermineMove()
 
     return MonsterAttack(slimeDamage);
 }
+#pragma endregion Slime
 
+#pragma region Zombie
 class Zombie : public Monster // Erik - Inheritance
 {
-
+public:
+    bool isDefending = false;
+    float maxHealth = 100;
+    float currentHealth = 100;
+    float zombieDamage = 5;
+    float MonsterAttack(float zombieDamage) override;
+    void TakeDamage(float damage) override;
+    float MonsterDefend() override;
+    float DetermineMove();
 };
 
+void Zombie::TakeDamage(float damage)
+{
+    if (isDefending) maxHealth -= damage / 2;
+    else maxHealth -= damage;
+}
+
+float Zombie::MonsterAttack(float zombieDamage)
+{
+    isDefending = false;
+    return zombieDamage;
+}
+
+float Zombie::MonsterDefend()
+{
+    isDefending = true;
+    return 0;
+}
+
+float Zombie::DetermineMove()
+{
+    if ((PlayerCombat::ReturnHealth() / PlayerCombat::ReturnMaxHealth()) - (currentHealth / maxHealth) >= 0.50)
+    {
+        return MonsterDefend();
+    }
+    else if ((PlayerCombat::ReturnHealth() / PlayerCombat::ReturnMaxHealth()) - (currentHealth / maxHealth) >= 0.30)
+    {
+        if (isDefending)
+        {
+            return MonsterAttack(zombieDamage);
+        }
+    }
+
+    return MonsterAttack(zombieDamage);
+}
+#pragma endregion Zombie
+
+#pragma region Spider
 class Spider : public Monster // Erik - Inheritance
 {
-
+public:
+    bool isDefending = false;
+    float maxHealth = 100;
+    float currentHealth = 100;
+    float spiderDamage = 5;
+    float MonsterAttack(float spiderDamage) override;
+    void TakeDamage(float damage) override;
+    float MonsterDefend() override;
+    float DetermineMove();
 };
 
+void Spider::TakeDamage(float damage)
+{
+    if (isDefending) maxHealth -= damage / 2;
+    else maxHealth -= damage;
+}
+
+float Spider::MonsterAttack(float spiderDamage)
+{
+    isDefending = false;
+    return spiderDamage;
+}
+
+float Spider::MonsterDefend()
+{
+    isDefending = true;
+    return 0;
+}
+
+float Spider::DetermineMove()
+{
+    if ((PlayerCombat::ReturnHealth() / PlayerCombat::ReturnMaxHealth()) - (currentHealth / maxHealth) >= 0.50)
+    {
+        return MonsterDefend();
+    }
+    else if ((PlayerCombat::ReturnHealth() / PlayerCombat::ReturnMaxHealth()) - (currentHealth / maxHealth) >= 0.30)
+    {
+        if (isDefending)
+        {
+            return MonsterAttack(spiderDamage);
+        }
+    }
+
+    return MonsterAttack(spiderDamage);
+}
+#pragma endregion Spider
+
+#pragma region Skeleton
 class Skeleton : public Monster // Erik - Inheritance
 {
-
+public:
+    bool isDefending = false;
+    float maxHealth = 100;
+    float currentHealth = 100;
+    float skeletonDamage = 5;
+    float MonsterAttack(float skeletonDamage) override;
+    void TakeDamage(float damage) override;
+    float MonsterDefend() override;
+    float DetermineMove();
 };
+
+void Skeleton::TakeDamage(float damage)
+{
+    if (isDefending) maxHealth -= damage / 2;
+    else maxHealth -= damage;
+}
+
+float Skeleton::MonsterAttack(float skeletonDamage)
+{
+    isDefending = false;
+    return skeletonDamage;
+}
+
+float Skeleton::MonsterDefend()
+{
+    isDefending = true;
+    return 0;
+}
+
+float Skeleton::DetermineMove()
+{
+    if ((PlayerCombat::ReturnHealth() / PlayerCombat::ReturnMaxHealth()) - (currentHealth / maxHealth) >= 0.50)
+    {
+        return MonsterDefend();
+    }
+    else if ((PlayerCombat::ReturnHealth() / PlayerCombat::ReturnMaxHealth()) - (currentHealth / maxHealth) >= 0.30)
+    {
+        if (isDefending)
+        {
+            return MonsterAttack(skeletonDamage);
+        }
+    }
+
+    return MonsterAttack(skeletonDamage);
+}
+#pragma endregion Skeleton
 #pragma endregion Monster
 
 #pragma region Dialogue
