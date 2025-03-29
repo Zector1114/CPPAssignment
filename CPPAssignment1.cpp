@@ -41,10 +41,10 @@ float PlayerCombat::ReturnMaxHealth() // Sophie
 void PlayerCombat::TakeDamage(float damage) // Sophie
 {
     if (isDefending) {
-        currentHealth -= damage;
+        currentHealth -= damage / 2;
     }
     else {
-        currentHealth -= damage / 2;
+        currentHealth -= damage;
     }
 }
 
@@ -67,16 +67,24 @@ class Monster // Erik
 public:
     Monster() {};
     bool isDefending = false;
-    float currentHealth = 100;
-    float maxHealth = 100;
-    void SetHealth(float currentHealth, float maxHealth);
+    static float currentHealth;
+    static float maxHealth;
+    static string name;
+    virtual void SetHealth();
     virtual void TakeDamage(float damage);
     virtual float DetermineMove(); // |
     virtual float MonsterAttack(float monsterDamage); // Polymorphism
     virtual float MonsterDefend(); // |
+    virtual float ReturnHealth();
+    virtual float ReturnMaxHealth();
+    virtual string ReturnName();
 };
 
-void Monster::SetHealth(float currentHealth, float maxHealth)
+float Monster::currentHealth = 100;
+float Monster::maxHealth = 100;
+string Monster::name = "Monster";
+
+void Monster::SetHealth()
 {
     currentHealth = maxHealth;
 }
@@ -92,34 +100,56 @@ float Monster::MonsterDefend() { return 1; } // Erik
 
 void Monster::TakeDamage(float damage) {} // Erik
 
+float Monster::ReturnHealth() { return currentHealth; }
+
+float Monster::ReturnMaxHealth() { return maxHealth; }
+
+string Monster::ReturnName() { return name; }
+
 #pragma region Slime
 class Slime : public Monster // Erik - Inheritance
 {
 public:
     bool isDefending = false;
-    float maxHealth = 100;
-    float currentHealth = 100;
-    float slimeDamage = 5;
-    float MonsterAttack(float slimeDamage) override;
+    static float maxHealth;
+    static float currentHealth;
+    float monsterDamage = 5;
+    static string name;
+    void SetHealth() override;
+    float MonsterAttack(float monsterDamage) override;
     void TakeDamage(float damage) override;
     float MonsterDefend() override;
-    float DetermineMove();
+    float DetermineMove() override;
+    float ReturnHealth() override;
+    float ReturnMaxHealth() override;
+    string ReturnName() override;
 };
+
+float Slime::maxHealth = 100;
+float Slime::currentHealth = 100;
+string Slime::name = "Slime";
+
+void Slime::SetHealth()
+{
+    currentHealth = maxHealth;
+}
 
 void Slime::TakeDamage(float damage)
 {
-    if (isDefending) maxHealth -= damage / 2;
-    else maxHealth -= damage;
+    if (isDefending) currentHealth -= damage / 2;
+    else currentHealth -= damage;
 }
 
-float Slime::MonsterAttack(float slimeDamage)
+float Slime::MonsterAttack(float monsterDamage)
 {
+    cout << "The " << name << " attacked and did " << monsterDamage << " damage!\n\n";
     isDefending = false;
-    return slimeDamage;
+    return monsterDamage;
 }
 
 float Slime::MonsterDefend()
 {
+    cout << "The " << name << " defended!\n\n";
     isDefending = true;
     return 0;
 }
@@ -134,12 +164,18 @@ float Slime::DetermineMove()
     {
         if (isDefending)
         {
-            return MonsterAttack(slimeDamage);
+            return MonsterAttack(monsterDamage);
         }
     }
 
-    return MonsterAttack(slimeDamage);
+    return MonsterAttack(monsterDamage);
 }
+
+float Slime::ReturnHealth() { return currentHealth; }
+
+float Slime::ReturnMaxHealth() { return maxHealth; }
+
+string Slime::ReturnName() { return name; }
 #pragma endregion Slime
 
 #pragma region Zombie
@@ -147,29 +183,45 @@ class Zombie : public Monster // Erik - Inheritance
 {
 public:
     bool isDefending = false;
-    float maxHealth = 100;
-    float currentHealth = 100;
-    float zombieDamage = 5;
-    float MonsterAttack(float zombieDamage) override;
+    static float maxHealth;
+    static float currentHealth;
+    float monsterDamage = 7;
+    static string name;
+    void SetHealth() override;
+    float MonsterAttack(float monsterDamage) override;
     void TakeDamage(float damage) override;
     float MonsterDefend() override;
-    float DetermineMove();
+    float DetermineMove() override;
+    float ReturnHealth() override;
+    float ReturnMaxHealth() override;
+    string ReturnName() override;
 };
+
+float Zombie::maxHealth = 125;
+float Zombie::currentHealth = 125;
+string Zombie::name = "Zombie";
+
+void Zombie::SetHealth()
+{
+    currentHealth = maxHealth;
+}
 
 void Zombie::TakeDamage(float damage)
 {
-    if (isDefending) maxHealth -= damage / 2;
-    else maxHealth -= damage;
+    if (isDefending) currentHealth -= damage / 2;
+    else currentHealth -= damage;
 }
 
-float Zombie::MonsterAttack(float zombieDamage)
+float Zombie::MonsterAttack(float monsterDamage)
 {
+    cout << "The " << name << " attacked and did " << monsterDamage << " damage!\n\n";
     isDefending = false;
-    return zombieDamage;
+    return monsterDamage;
 }
 
 float Zombie::MonsterDefend()
 {
+    cout << "The " << name << " defended!\n\n";
     isDefending = true;
     return 0;
 }
@@ -184,12 +236,18 @@ float Zombie::DetermineMove()
     {
         if (isDefending)
         {
-            return MonsterAttack(zombieDamage);
+            return MonsterAttack(monsterDamage);
         }
     }
 
-    return MonsterAttack(zombieDamage);
+    return MonsterAttack(monsterDamage);
 }
+
+float Zombie::ReturnHealth() { return currentHealth; }
+
+float Zombie::ReturnMaxHealth() { return maxHealth; }
+
+string Zombie::ReturnName() { return name; }
 #pragma endregion Zombie
 
 #pragma region Spider
@@ -197,29 +255,45 @@ class Spider : public Monster // Erik - Inheritance
 {
 public:
     bool isDefending = false;
-    float maxHealth = 100;
-    float currentHealth = 100;
-    float spiderDamage = 5;
-    float MonsterAttack(float spiderDamage) override;
+    static float maxHealth;
+    static float currentHealth;
+    float monsterDamage = 10;
+    static string name;
+    void SetHealth() override;
+    float MonsterAttack(float monsterDamage) override;
     void TakeDamage(float damage) override;
     float MonsterDefend() override;
-    float DetermineMove();
+    float DetermineMove() override;
+    float ReturnHealth() override;
+    float ReturnMaxHealth() override;
+    string ReturnName() override;
 };
+
+float Spider::maxHealth = 150;
+float Spider::currentHealth = 150;
+string Spider::name = "Spider";
+
+void Spider::SetHealth()
+{
+    currentHealth = maxHealth;
+}
 
 void Spider::TakeDamage(float damage)
 {
-    if (isDefending) maxHealth -= damage / 2;
-    else maxHealth -= damage;
+    if (isDefending) currentHealth -= damage / 3;
+    else currentHealth -= damage;
 }
 
-float Spider::MonsterAttack(float spiderDamage)
+float Spider::MonsterAttack(float monsterDamage)
 {
+    cout << "The " << name << " attacked and did " << monsterDamage << " damage!\n\n";
     isDefending = false;
-    return spiderDamage;
+    return monsterDamage;
 }
 
 float Spider::MonsterDefend()
 {
+    cout << "The " << name << " defended!\n\n";
     isDefending = true;
     return 0;
 }
@@ -234,12 +308,18 @@ float Spider::DetermineMove()
     {
         if (isDefending)
         {
-            return MonsterAttack(spiderDamage);
+            return MonsterAttack(monsterDamage);
         }
     }
 
-    return MonsterAttack(spiderDamage);
+    return MonsterAttack(monsterDamage);
 }
+
+float Spider::ReturnHealth() { return currentHealth; }
+
+float Spider::ReturnMaxHealth() { return maxHealth; }
+
+string Spider::ReturnName() { return name; }
 #pragma endregion Spider
 
 #pragma region Skeleton
@@ -247,29 +327,45 @@ class Skeleton : public Monster // Erik - Inheritance
 {
 public:
     bool isDefending = false;
-    float maxHealth = 100;
-    float currentHealth = 100;
-    float skeletonDamage = 5;
-    float MonsterAttack(float skeletonDamage) override;
+    static float maxHealth;
+    static float currentHealth;
+    float monsterDamage = 12;
+    static string name;
+    void SetHealth() override;
+    float MonsterAttack(float monsterDamage) override;
     void TakeDamage(float damage) override;
     float MonsterDefend() override;
-    float DetermineMove();
+    float DetermineMove() override;
+    float ReturnHealth() override;
+    float ReturnMaxHealth() override;
+    string ReturnName() override;
 };
+
+float Skeleton::maxHealth = 175;
+float Skeleton::currentHealth = 175;
+string Skeleton::name = "Skeleton";
+
+void Skeleton::SetHealth()
+{
+    currentHealth = maxHealth;
+}
 
 void Skeleton::TakeDamage(float damage)
 {
-    if (isDefending) maxHealth -= damage / 2;
-    else maxHealth -= damage;
+    if (isDefending) currentHealth -= damage / 3;
+    else currentHealth -= damage;
 }
 
-float Skeleton::MonsterAttack(float skeletonDamage)
+float Skeleton::MonsterAttack(float monsterDamage)
 {
+    cout << "The " << name << " attacked and did " << monsterDamage << " damage!\n\n";
     isDefending = false;
-    return skeletonDamage;
+    return monsterDamage;
 }
 
 float Skeleton::MonsterDefend()
 {
+    cout << "The " << name << " defended!\n\n";
     isDefending = true;
     return 0;
 }
@@ -284,12 +380,18 @@ float Skeleton::DetermineMove()
     {
         if (isDefending)
         {
-            return MonsterAttack(skeletonDamage);
+            return MonsterAttack(monsterDamage);
         }
     }
 
-    return MonsterAttack(skeletonDamage);
+    return MonsterAttack(monsterDamage);
 }
+
+float Skeleton::ReturnHealth() { return currentHealth; }
+
+float Skeleton::ReturnMaxHealth() { return maxHealth; }
+
+string Skeleton::ReturnName() { return name; }
 #pragma endregion Skeleton
 #pragma endregion Monster
 
@@ -346,18 +448,28 @@ int main() // Erik
     cout << "\nWelcome " << playerName << "\n\n\n";
 
     PlayerCombat* player = new PlayerCombat();
+    Monster* monsters[4];
+
+    monsters[0] = new Slime();
+    monsters[1] = new Zombie();
+    monsters[2] = new Spider();
+    monsters[3] = new Skeleton();
+
+    int monInd = 0;
 
     while (PlayerCombat::ReturnHealth() > 0)
     {
         player->isDefending = false;
 
         cout << playerName << " HEALTH: " << PlayerCombat::ReturnHealth() << "/" << PlayerCombat::ReturnMaxHealth() << "\n";
+        cout << monsters[monInd]->ReturnName() << " Health: " << monsters[monInd]->ReturnHealth() << " / " << monsters[monInd]->ReturnMaxHealth() << "\n";
         cout << "Actions:     Attack(1), Heal(2), Defend(3)\n";
         int action;
         cin >> action;
         switch (action) {
         case 1:
             //input enemy damage code
+            monsters[monInd]->TakeDamage(player->damage);
             cout << playerName << " dealt " << player->damage << " damage to the enemy.";
             break;
         case 2:
@@ -376,6 +488,25 @@ int main() // Erik
         }
 
         player->TurnEnd();
+        cout << "\n\n";
+
+        if (monsters[monInd]->ReturnHealth() <= 0)
+        {
+            cout << "The " << monsters[monInd]->ReturnName() << " was defeated!\n\n";
+            monsters[monInd]->SetHealth();
+            monInd++;
+
+            if (monInd == 4)
+            {
+                monInd = 0;
+            }
+
+            cout << "A " << monsters[monInd]->ReturnName() << " has appeared!\n\n";
+        }
+        else
+        {
+            player->TakeDamage(monsters[monInd]->DetermineMove());
+        }
         cout << "\n\n\n\n\n\n"; //Keep this line at the end of all the code to make the output look more clear!
     }
 }
