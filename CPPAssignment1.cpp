@@ -5,29 +5,28 @@
 #include <string>
 using namespace std;
 
-int main() // Erik
-{
-    
-}
 
 #pragma region Player
 class PlayerCombat // Sophie
 {
 public:
-    float damage;
-    float healAmount;
+    bool isDefending = false;
+    float damage = 15;
+    float healAmount = 30;
+    int healTimer = 0;
     static float ReturnHealth();
     static float ReturnMaxHealth();
     void TakeDamage(float damage);
     void TurnEnd();
-    void PlayerDied();
+    void Heal();
 private:
     static float currentHealth;
     static float maxHealth;
-    int healTimer = 3;
     int healTimerTurnAmount = 3;
-    void Heal(float healAmount);
 };
+
+float PlayerCombat::currentHealth = 100;
+float PlayerCombat::maxHealth = 100;
 
 float PlayerCombat::ReturnHealth() // Sophie
 {
@@ -41,24 +40,24 @@ float PlayerCombat::ReturnMaxHealth() // Sophie
 
 void PlayerCombat::TakeDamage(float damage) // Sophie
 {
-    currentHealth -= damage;
-    if (currentHealth <= 0) { PlayerDied(); }
+    if (isDefending) {
+        currentHealth -= damage;
+    }
+    else {
+        currentHealth -= damage / 2;
+    }
 }
 
-void PlayerCombat::Heal(float healAmount) // Sophie
+void PlayerCombat::Heal() // Sophie
 {
     currentHealth += healAmount;
     if (currentHealth > maxHealth) {currentHealth = maxHealth;}
+    healTimer = healTimerTurnAmount;
 }
 
 void PlayerCombat::TurnEnd() //Sophie
 {
     if (healTimer > 0) { healTimer--; }
-}
-
-void PlayerCombat::PlayerDied()
-{
-
 }
 #pragma endregion Player
 
@@ -82,14 +81,14 @@ void Monster::SetHealth(float currentHealth, float maxHealth)
     currentHealth = maxHealth;
 }
 
-float Monster::DetermineMove() {} // Erik
+float Monster::DetermineMove() { return 1; } // Erik
 
 float Monster::MonsterAttack(float monsterDamage) // Erik
 {
     return monsterDamage;
 }
 
-float Monster::MonsterDefend() {} // Erik
+float Monster::MonsterDefend() { return 1; } // Erik
 
 void Monster::TakeDamage(float damage) {} // Erik
 
@@ -337,6 +336,49 @@ string Dialogue::OutputCombat(int combat, string monType) // Will
     return dialogueList[combat];
 }
 #pragma endregion Dialogue
+
+
+int main() // Erik
+{
+    string playerName;
+    cout << "Insert Your Name:\n";
+    cin >> playerName;
+    cout << "\nWelcome " << playerName << "\n\n\n";
+
+    PlayerCombat* player = new PlayerCombat();
+
+    while (PlayerCombat::ReturnHealth() > 0)
+    {
+        player->isDefending = false;
+
+        cout << playerName << " HEALTH: " << PlayerCombat::ReturnHealth() << "/" << PlayerCombat::ReturnMaxHealth() << "\n";
+        cout << "Actions:     Attack(1), Heal(2), Defend(3)\n";
+        int action;
+        cin >> action;
+        switch (action) {
+        case 1:
+            //input enemy damage code
+            cout << playerName << " dealt " << player->damage << " damage to the enemy.";
+            break;
+        case 2:
+            if (player->healTimer <= 0) {
+                player->Heal();
+                cout << playerName << " succesfully healed.";
+            }
+            else {
+                cout << player->healTimer << " turns remain until the player can heal.";
+            }
+            break;
+        case 3:
+            player->isDefending = true;
+            cout << playerName << " started to defend.";
+            break;
+        }
+
+        player->TurnEnd();
+        cout << "\n\n\n\n\n\n"; //Keep this line at the end of all the code to make the output look more clear!
+    }
+}
 
 // ---------- PLAYER COMBAT ---------
 // The player combat will be a relatively simplistic style of combat system as it'll only contain a few actions that'll be possible
